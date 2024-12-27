@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.OpenApi;
 
 namespace SimpleCrudApi.Models
 {
@@ -13,4 +15,8 @@ namespace SimpleCrudApi.Models
         public bool IsDeleted { get; set; } = false;
         public MemberType MemberType { get; set; }
     }
+
 }
+
+
+
