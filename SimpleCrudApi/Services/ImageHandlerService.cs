@@ -15,13 +15,13 @@ namespace SimpleCrudApi.Services
             if (file == null || file.Length == 0)
                 throw new ArgumentException("File is null or empty.");
 
-            if (!Directory.Exists(_environment.WebRootPath + "\\Upload"))
+            if (!Directory.Exists(_environment.WebRootPath + "Upload"))
             {
-                Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
+                Directory.CreateDirectory(_environment.WebRootPath + "Upload");
             }
 
 
-            folderPath = _environment.WebRootPath + "\\Upload\\";
+            folderPath = _environment.WebRootPath + "Upload";
             string uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             string filePath = Path.Combine(folderPath, uniqueFileName);
 

@@ -29,21 +29,48 @@ namespace SimpleCrudApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
-            return await _context.Members.ToListAsync();
+            var members = await _context.Members
+            .Include(m => m.MemberType)
+            .Where(m => !m.IsDeleted)
+            .ToListAsync();
+
+            var outputModels = members.Select(m => new MemberOutputModel
+            {
+                MemberId = m.MemberId,
+                MemberName = m.MemberName,
+                MemberAddress = m.MemberAddress,
+                MemberTypeName = m.MemberType.MemberTypeName,
+                MemberPhoto = m.MemberPhoto,
+                MemberSignature = m.MemberSignature != null ? Convert.ToBase64String(m.MemberSignature) : null
+            }).ToList();
+
+            return Ok(outputModels);
         }
 
         // GET: api/Members/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Member>> GetMember(int id)
         {
-            var member = await _context.Members.FindAsync(id);
+            var member = await _context.Members
+            .Include(m => m.MemberType)
+            .FirstOrDefaultAsync(m => m.MemberId == id && !m.IsDeleted);
 
             if (member == null)
             {
                 return NotFound();
             }
 
-            return member;
+            var outputModel = new MemberOutputModel
+            {
+                MemberId = member.MemberId,
+                MemberName = member.MemberName,
+                MemberAddress = member.MemberAddress,
+                MemberTypeName = member.MemberType.MemberTypeName,
+                MemberPhoto = member.MemberPhoto,
+                MemberSignature = member.MemberSignature != null ? Convert.ToBase64String(member.MemberSignature) : null
+            };
+
+            return Ok(outputModel);
         }
 
 
