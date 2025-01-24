@@ -75,7 +75,7 @@ namespace SimpleCrudApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(int id, MemberCreateDTOs memberDto)
+        public async Task<IActionResult> PutMember(int? id, MemberCreateDTOs? memberDto)
         {
             if (id != memberDto.MemberId)
             {
@@ -108,7 +108,7 @@ namespace SimpleCrudApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MemberExists(id))
+                if (!MemberExists((int)id))
                 {
                     return NotFound();
                 }
